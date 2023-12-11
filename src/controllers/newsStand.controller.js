@@ -30,7 +30,7 @@ exports.createNewsStand = (req, res) => {
 
 exports.getNewsStands = (req, res) => {
   NewsStand.findById(req.newsStand.id)
-    //   .populate("new")
+    .populate("new")
     .then((data) => {
       if (!data) {
         res.status(500).send({
@@ -46,7 +46,7 @@ exports.getNewsStands = (req, res) => {
 
 exports.getNewsStand = (req, res) => {
   NewsStand.find()
-    //   .populate("new")
+    .populate("new")
     .then((data) => {
       res.status(200).json(data);
     })
