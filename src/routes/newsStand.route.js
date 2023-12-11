@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const newsStand = require('../controllers/newsStand.model');
+const newsStand = require('../controllers/newsStand.controller');
 const verifyToken = require('../middlewares/verifyToken');
 
 router.post('/newsStand', verifyToken, newsStand.createNewsStand);
