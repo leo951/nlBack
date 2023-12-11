@@ -40,7 +40,7 @@ exports.createUser = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: 500,
+        code: 500,
         message: err.message || "Vous avez une erreur",
       });
     });
@@ -78,7 +78,7 @@ exports.login = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(500).send(err);
     });
 };
 
