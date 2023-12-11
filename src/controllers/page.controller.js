@@ -1,20 +1,19 @@
-const NewsStand = require("../models/newsStand.model");
+const Page = require("../models/page.model");
 
 const moment = require("moment");
 
-exports.createNewsStand = (req, res) => {
+exports.createPage = (req, res) => {
   const createDate = moment();
 
-  const newsStand = new NewsStand({
+  const page = new Page({
+    number: req.body.number,
     title: req.body.title,
-    news: req.body.news,
-    icon: req.body.icon,
-    color: req.body.color,
+    content: req.body.content,
     createDate: createDate.format("DD-MM-YYYY HH:mm:ss"),
     updateDate: createDate.format("DD-MM-YYYY HH:mm:ss"),
   });
 
-  newsStand
+  page
     .save()
     .then((data) => {
       res.status(201).send({
@@ -28,13 +27,12 @@ exports.createNewsStand = (req, res) => {
     });
 };
 
-exports.getNewsStands = (req, res) => {
-  NewsStand.findById(req.newsStand.id)
-    //   .populate("new")
+exports.getPage = (req, res) => {
+  Page.findById(req.page.id)
     .then((data) => {
       if (!data) {
         res.status(500).send({
-          message: `Your newsStand ${req.newsStand.id} was not found`,
+          message: `Your page ${req.page.id} was not found`,
         });
       }
       return res.status(200).send({
@@ -44,9 +42,8 @@ exports.getNewsStands = (req, res) => {
     .catch((err) => res.send(err));
 };
 
-exports.getNewsStand = (req, res) => {
-  NewsStand.find()
-    //   .populate("new")
+exports.getPages = (req, res) => {
+  Page.find()
     .then((data) => {
       res.status(200).json(data);
     })
@@ -57,12 +54,12 @@ exports.getNewsStand = (req, res) => {
     });
 };
 
-exports.updateNewsStand = (req, res) => {
+exports.updatePage = (req, res) => {
   const updateDate = moment();
 
   req.body.updateDate = updateDate.format("DD-MM-YYYY HH:mm:ss");
-
-  NewsStand.findByIdAndUpdate(req.newsStand.id, req.body, {
+  
+  Page.findByIdAndUpdate(req.page.id, req.body, {
     new: true,
   })
     .then((data) => {
@@ -71,11 +68,11 @@ exports.updateNewsStand = (req, res) => {
     .catch((err) => res.status(500).json({ err: err }));
 };
 
-exports.deleteNewsStand = (req, res) => {
-  User.deleteOne({ _id: req.params.id })
+exports.deletePage = (req, res) => {
+  Page.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
-        message: "NewsStand deleted successfully !",
+        message: "Page deleted successfully !",
       });
     })
     .catch((error) => {

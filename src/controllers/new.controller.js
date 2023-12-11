@@ -33,7 +33,7 @@ exports.getNew = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(500).send({
-          message: `Your new ${req.body.id} was not found`,
+          message: `Your new ${req.new.id} was not found`,
         });
       }
       return res.status(200).send({
@@ -57,6 +57,10 @@ exports.getNews = (req, res) => {
 };
 
 exports.updateNew = (req, res) => {
+  const updateDate = moment();
+
+  req.body.updateDate = updateDate.format("DD-MM-YYYY HH:mm:ss");
+  
   New.findByIdAndUpdate(req.new.id, req.body, {
     new: true,
   })
