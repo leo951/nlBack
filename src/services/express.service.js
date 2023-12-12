@@ -1,12 +1,13 @@
 require("dotenv").config();
+const apiRouter = require("../routes");
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 
 app.use("*", cors());
-
-// app.use("/api/v1", apiRouter);
+app.use(express.json());
+app.use("/api/v1", apiRouter);
 
 exports.start = () => {
   const port = process.env.PORT;

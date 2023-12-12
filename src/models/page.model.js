@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const pageSchema = new Schema({
   number: {
     type: Number,
     require: true
@@ -19,4 +19,4 @@ const userSchema = new Schema({
     type: String
   }
 });
-module.exports = mongoose.model("Page", userSchema);
+module.exports = mongoose.model("Page", pageSchema);
