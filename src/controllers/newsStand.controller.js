@@ -29,8 +29,8 @@ exports.createNewsStand = (req, res) => {
 };
 
 exports.getNewsStands = (req, res) => {
-  NewsStand.findById(req.newsStand.id)
-    .populate("new")
+  NewsStand.find()
+    .populate("news")
     .then((data) => {
       if (!data) {
         res.status(500).send({
@@ -45,8 +45,8 @@ exports.getNewsStands = (req, res) => {
 };
 
 exports.getNewsStand = (req, res) => {
-  NewsStand.find()
-    .populate("new")
+  NewsStand.findById(req.params.id)
+    .populate("news")
     .then((data) => {
       res.status(200).json(data);
     })
@@ -62,7 +62,7 @@ exports.updateNewsStand = (req, res) => {
 
   req.body.updateDate = updateDate.format("DD-MM-YYYY HH:mm:ss");
 
-  NewsStand.findByIdAndUpdate(req.newsStand.id, req.body, {
+  NewsStand.findByIdAndUpdate(req.body.id, req.body, {
     new: true,
   })
     .then((data) => {
@@ -72,7 +72,7 @@ exports.updateNewsStand = (req, res) => {
 };
 
 exports.deleteNewsStand = (req, res) => {
-  User.deleteOne({ _id: req.params.id })
+  NewsStand.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
         message: "NewsStand deleted successfully !",

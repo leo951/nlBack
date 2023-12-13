@@ -28,8 +28,8 @@ exports.createNew = (req, res) => {
 };
 
 exports.getNew = (req, res) => {
-  New.findById(req.new.id)
-    .populate("page")
+  New.findById(req.params.id)
+    .populate("pages")
     .then((data) => {
       if (!data) {
         res.status(500).send({
@@ -45,7 +45,7 @@ exports.getNew = (req, res) => {
 
 exports.getNews = (req, res) => {
   New.find()
-    .populate("page")
+    .populate("pages")
     .then((data) => {
       res.status(200).json(data);
     })
@@ -61,7 +61,7 @@ exports.updateNew = (req, res) => {
 
   req.body.updateDate = updateDate.format("DD-MM-YYYY HH:mm:ss");
 
-  New.findByIdAndUpdate(req.new.id, req.body, {
+  New.findByIdAndUpdate(req.body.id, req.body, {
     new: true,
   })
     .then((data) => {

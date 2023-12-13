@@ -28,11 +28,11 @@ exports.createPage = (req, res) => {
 };
 
 exports.getPage = (req, res) => {
-  Page.findById(req.page.id)
+  Page.findById(req.params.id)
     .then((data) => {
       if (!data) {
         res.status(500).send({
-          message: `Your page ${req.page.id} was not found`,
+          message: `Your page ${req.params.id} was not found`,
         });
       }
       return res.status(200).send({
@@ -59,7 +59,7 @@ exports.updatePage = (req, res) => {
 
   req.body.updateDate = updateDate.format("DD-MM-YYYY HH:mm:ss");
   
-  Page.findByIdAndUpdate(req.page.id, req.body, {
+  Page.findByIdAndUpdate(req.body.id, req.body, {
     new: true,
   })
     .then((data) => {
