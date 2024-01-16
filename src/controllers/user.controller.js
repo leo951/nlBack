@@ -4,48 +4,6 @@ const configs = require("../configs/jwt.config");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.createUser = (req, res) => {
-  const hasedPassword = bcrypt.hashSync(req.body.password, 10);
-
-  const user = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: hasedPassword,
-    profilePicture: req.body.profilePicture,
-    mindSet: req.body.mindSet,
-    dayNote: req.body.dayNote,
-    newsStands: req.body.newsStands,
-    isAdmin: req.body.isAdmin || false,
-  });
-
-  user
-    .save()
-    .then((data) => {
-      let userToken = jwt.sign(
-        {
-          id: data._id,
-          isAdmin: data.isAdmin,
-          auth: true,
-        },
-        configs.jwt.secret,
-        {
-          expiresIn: 86400,
-        }
-      );
-      res.send({
-        token: userToken,
-        auth: true,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        code: 500,
-        message: err.message || "Vous avez une erreur",
-      });
-    });
-};
-
 exports.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
@@ -77,8 +35,39 @@ exports.login = (req, res) => {
         });
       }
     })
-    .catch((err) => {
-      res.status(500).send(err);
+    .catch(() => {
+      const hasedPassword = bcrypt.hashSync(req.body.password, 10);
+
+      const user = new User({
+        email: req.body.email,
+        password: hasedPassword,
+        isAdmin: req.body.isAdmin || false,
+      });
+      user
+        .save()
+        .then((data) => {
+          let userToken = jwt.sign(
+            {
+              id: data._id,
+              isAdmin: data.isAdmin,
+              auth: true,
+            },
+            configs.jwt.secret,
+            {
+              expiresIn: 86400,
+            }
+          );
+          res.send({
+            token: userToken,
+            auth: true,
+          });
+        })
+        .catch((err) => {
+          res.status(500).send({
+            code: 500,
+            message: err.message || "Vous avez une erreur",
+          });
+        });
     });
 };
 

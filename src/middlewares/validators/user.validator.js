@@ -2,8 +2,6 @@ const Joi = require("joi");
 
 const userValidation = (req, res, next) => {
   const userValidationSchema = Joi.object({
-    firstName: Joi.string().max(100).required(),
-    lastName: Joi.string().max(100).required(),
     email: Joi.string().email({
       minDomainSegments: 2,
       tlds: { allow: ["com", "fr"] },
