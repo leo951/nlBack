@@ -22,6 +22,10 @@ const userSchema = new Schema({
   profilePicture: {
     type: String,
   },
+  isGoogle: {
+    type: Boolean,
+    default: false
+  },
   mindSet: {
     type: Array
   },
