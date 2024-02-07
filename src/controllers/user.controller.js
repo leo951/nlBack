@@ -54,7 +54,6 @@ exports.login = (req, res) => {
       }
     })
     .catch(() => {
-      console.log('Je suis req = ', req);
       if (req.body.isGoogle) {
         const user = new User({
           email: req.body.email,
@@ -127,9 +126,11 @@ exports.login = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  User.findByIdAndUpdate(req.user.id, req.body, {
-    new: true,
-  })
+  User.findByIdAndUpdate(
+    req.user.id,
+    { $push: { newsStands: req.body.newsStands } },
+    { new: true }
+  )
     .then((data) => {
       res.send({ user: data });
     })
@@ -148,4 +149,15 @@ exports.deleteUser = (req, res) => {
         error: error,
       });
     });
+};
+
+exports.getUser = (req, res) => {
+  User.findById(req.user.id)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "Utilisateur introuvable" });
+      }
+      res.send({ user });
+    })
+    .catch((err) => res.status(500).json({ err: err.message }));
 };
